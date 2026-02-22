@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Django migrations (optional, you might want to keep them)
+*/migrations/*.pyc
+*/migrations/*.py
+*/migrations/__pycache__/
+
+# Local database files
+*.sqlite3
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# IDEs and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# Node / Frontend (if included)
+node_modules/
+dist/
+build/
