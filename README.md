@@ -51,7 +51,6 @@ This project demonstrates full-stack development skills using a **React/Next.js 
 
 ```env
 DATABASE_URL=postgres://username:password@host:port/dbname
-USE_SSL="False"
 ```
 
 ### Frontend (`.env`)
