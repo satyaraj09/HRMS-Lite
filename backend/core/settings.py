@@ -1,6 +1,10 @@
 from pathlib import Path
 import os
 import dj_database_url
+import environs
+
+env = environs.Env()
+env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +12,7 @@ SECRET_KEY = 'django-insecure-rrbug3dou(f_(utc=($+6xu1mrb7fkciatufgnh+@ok_hdq32g
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 
 INSTALLED_APPS = [
@@ -56,8 +60,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv("DATABASE_URL", "sqlite:///db.sqlite3"),
+    "default": dj_database_url.parse(
+        env.str("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600
     )
 }
