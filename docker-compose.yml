@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: hrms
+      POSTGRES_PASSWORD: hrms123
+      POSTGRES_DB: hrms_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    volumes:
+      - ./backend:/app
+      - ./backend/staticfiles:/app/staticfiles
+    environment:
+      DATABASE_URL: postgres://hrms:hrms123@db:5432/hrms_db
+      DEBUG: "0"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "npm install && npm run dev"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
